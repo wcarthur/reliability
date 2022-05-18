@@ -392,7 +392,7 @@ class Weibull_Distribution:
         """
         X, xvals, xmin, xmax, show_plot = distributions_input_checking(
             self, "PDF", xvals, xmin, xmax, show_plot
-        )
+        )  # lgtm [py/mismatched-multiple-assignment]
 
         pdf = ss.weibull_min.pdf(X, self.beta, scale=self.alpha, loc=self.gamma)
         pdf = unpack_single_arrays(pdf)
@@ -432,8 +432,8 @@ class Weibull_Distribution:
         xmax=None,
         show_plot=True,
         plot_CI=True,
-        CI_type="time",
-        CI=0.95,
+        CI_type=None,
+        CI=None,
         CI_y=None,
         CI_x=None,
         **kwargs
@@ -569,8 +569,8 @@ class Weibull_Distribution:
         xmax=None,
         show_plot=True,
         plot_CI=True,
-        CI_type="time",
-        CI=0.95,
+        CI_type=None,
+        CI=None,
         CI_y=None,
         CI_x=None,
         **kwargs
@@ -734,7 +734,7 @@ class Weibull_Distribution:
 
         X, xvals, xmin, xmax, show_plot = distributions_input_checking(
             self, "HF", xvals, xmin, xmax, show_plot
-        )
+        )  # lgtm [py/mismatched-multiple-assignment]
 
         hf = (self.beta / self.alpha) * ((X - self.gamma) / self.alpha) ** (
             self.beta - 1
@@ -776,8 +776,8 @@ class Weibull_Distribution:
         xmax=None,
         show_plot=True,
         plot_CI=True,
-        CI_type="time",
-        CI=0.95,
+        CI_type=None,
+        CI=None,
         CI_y=None,
         CI_x=None,
         **kwargs
@@ -1351,7 +1351,7 @@ class Normal_Distribution:
         """
         X, xvals, xmin, xmax, show_plot = distributions_input_checking(
             self, "PDF", xvals, xmin, xmax, show_plot
-        )
+        )  # lgtm [py/mismatched-multiple-assignment]
 
         pdf = ss.norm.pdf(X, self.mu, self.sigma)
         pdf = unpack_single_arrays(pdf)
@@ -1391,8 +1391,8 @@ class Normal_Distribution:
         xmax=None,
         show_plot=True,
         plot_CI=True,
-        CI_type="time",
-        CI=0.95,
+        CI_type=None,
+        CI=None,
         CI_y=None,
         CI_x=None,
         **kwargs
@@ -1509,8 +1509,8 @@ class Normal_Distribution:
         xmax=None,
         show_plot=True,
         plot_CI=True,
-        CI_type="time",
-        CI=0.95,
+        CI_type=None,
+        CI=None,
         CI_y=None,
         CI_x=None,
         **kwargs
@@ -1654,7 +1654,7 @@ class Normal_Distribution:
         """
         X, xvals, xmin, xmax, show_plot = distributions_input_checking(
             self, "HF", xvals, xmin, xmax, show_plot
-        )
+        )  # lgtm [py/mismatched-multiple-assignment]
 
         hf = ss.norm.pdf(X, self.mu, self.sigma) / ss.norm.sf(X, self.mu, self.sigma)
         hf = unpack_single_arrays(hf)
@@ -1691,8 +1691,8 @@ class Normal_Distribution:
         xmax=None,
         show_plot=True,
         plot_CI=True,
-        CI_type="time",
-        CI=0.95,
+        CI_type=None,
+        CI=None,
         CI_y=None,
         CI_x=None,
         **kwargs
@@ -2262,7 +2262,7 @@ class Lognormal_Distribution:
         """
         X, xvals, xmin, xmax, show_plot = distributions_input_checking(
             self, "PDF", xvals, xmin, xmax, show_plot
-        )
+        )  # lgtm [py/mismatched-multiple-assignment]
 
         pdf = ss.lognorm.pdf(X, self.sigma, self.gamma, np.exp(self.mu))
         pdf = unpack_single_arrays(pdf)
@@ -2302,8 +2302,8 @@ class Lognormal_Distribution:
         xmax=None,
         show_plot=True,
         plot_CI=True,
-        CI_type="time",
-        CI=0.95,
+        CI_type=None,
+        CI=None,
         CI_y=None,
         CI_x=None,
         **kwargs
@@ -2422,8 +2422,8 @@ class Lognormal_Distribution:
         xmax=None,
         show_plot=True,
         plot_CI=True,
-        CI_type="time",
-        CI=0.95,
+        CI_type=None,
+        CI=None,
         CI_y=None,
         CI_x=None,
         **kwargs
@@ -2567,7 +2567,7 @@ class Lognormal_Distribution:
         """
         X, xvals, xmin, xmax, show_plot = distributions_input_checking(
             self, "HF", xvals, xmin, xmax, show_plot
-        )
+        )  # lgtm [py/mismatched-multiple-assignment]
 
         hf = ss.lognorm.pdf(X, self.sigma, self.gamma, np.exp(self.mu)) / ss.lognorm.sf(
             X, self.sigma, self.gamma, np.exp(self.mu)
@@ -2609,8 +2609,8 @@ class Lognormal_Distribution:
         xmax=None,
         show_plot=True,
         plot_CI=True,
-        CI_type="time",
-        CI=0.95,
+        CI_type=None,
+        CI=None,
         CI_y=None,
         CI_x=None,
         **kwargs
@@ -3172,7 +3172,7 @@ class Exponential_Distribution:
         """
         X, xvals, xmin, xmax, show_plot = distributions_input_checking(
             self, "PDF", xvals, xmin, xmax, show_plot
-        )
+        )  # lgtm [py/mismatched-multiple-assignment]
 
         pdf = ss.expon.pdf(X, scale=1 / self.Lambda, loc=self.gamma)
         pdf = unpack_single_arrays(pdf)
@@ -3212,7 +3212,7 @@ class Exponential_Distribution:
         xmax=None,
         show_plot=True,
         plot_CI=True,
-        CI=0.95,
+        CI=None,
         CI_y=None,
         CI_x=None,
         **kwargs
@@ -3334,7 +3334,7 @@ class Exponential_Distribution:
         xmax=None,
         show_plot=True,
         plot_CI=True,
-        CI=0.95,
+        CI=None,
         CI_y=None,
         CI_x=None,
         **kwargs
@@ -3483,7 +3483,7 @@ class Exponential_Distribution:
         """
         X, xvals, xmin, xmax, show_plot = distributions_input_checking(
             self, "HF", xvals, xmin, xmax, show_plot
-        )
+        )  # lgtm [py/mismatched-multiple-assignment]
 
         hf = np.ones_like(X) * self.Lambda
         hf = zeroise_below_gamma(X=X, Y=hf, gamma=self.gamma)
@@ -3524,7 +3524,7 @@ class Exponential_Distribution:
         xmax=None,
         show_plot=True,
         plot_CI=True,
-        CI=0.95,
+        CI=None,
         CI_y=None,
         CI_x=None,
         **kwargs
@@ -4125,7 +4125,7 @@ class Gamma_Distribution:
         """
         X, xvals, xmin, xmax, show_plot = distributions_input_checking(
             self, "PDF", xvals, xmin, xmax, show_plot
-        )
+        )  # lgtm [py/mismatched-multiple-assignment]
 
         pdf = ss.gamma.pdf(X, self.beta, scale=self.alpha, loc=self.gamma)
         pdf = unpack_single_arrays(pdf)
@@ -4165,8 +4165,8 @@ class Gamma_Distribution:
         xmax=None,
         show_plot=True,
         plot_CI=True,
-        CI_type="time",
-        CI=0.95,
+        CI_type=None,
+        CI=None,
         CI_y=None,
         CI_x=None,
         **kwargs
@@ -4285,8 +4285,8 @@ class Gamma_Distribution:
         xmax=None,
         show_plot=True,
         plot_CI=True,
-        CI_type="time",
-        CI=0.95,
+        CI_type=None,
+        CI=None,
         CI_y=None,
         CI_x=None,
         **kwargs
@@ -4429,7 +4429,7 @@ class Gamma_Distribution:
         """
         X, xvals, xmin, xmax, show_plot = distributions_input_checking(
             self, "HF", xvals, xmin, xmax, show_plot
-        )
+        )  # lgtm [py/mismatched-multiple-assignment]
 
         hf = ss.gamma.pdf(X, self.beta, scale=self.alpha, loc=self.gamma) / ss.gamma.sf(
             X, self.beta, scale=self.alpha, loc=self.gamma
@@ -4468,8 +4468,8 @@ class Gamma_Distribution:
         xmax=None,
         show_plot=True,
         plot_CI=True,
-        CI_type="time",
-        CI=0.95,
+        CI_type=None,
+        CI=None,
         CI_y=None,
         CI_x=None,
         **kwargs
@@ -4820,6 +4820,7 @@ class Beta_Distribution:
         self._hf0 = ss.beta.pdf(0, self.alpha, self.beta, 0, 1) / ss.beta.sf(
             0, self.alpha, self.beta, 0, 1
         )
+        self.Z = None  # this is necessary because distributions_input_checking looks for this value
 
     def plot(self, xvals=None, xmin=None, xmax=None):
         """
@@ -5005,7 +5006,7 @@ class Beta_Distribution:
         """
         X, xvals, xmin, xmax, show_plot = distributions_input_checking(
             self, "PDF", xvals, xmin, xmax, show_plot
-        )
+        )  # lgtm [py/mismatched-multiple-assignment]
 
         pdf = ss.beta.pdf(X, self.alpha, self.beta, 0, 1)
         pdf = unpack_single_arrays(pdf)
@@ -5139,7 +5140,7 @@ class Beta_Distribution:
         """
         X, xvals, xmin, xmax, show_plot = distributions_input_checking(
             self, "SF", xvals, xmin, xmax, show_plot
-        )
+        )  # lgtm [py/mismatched-multiple-assignment]
 
         sf = ss.beta.sf(X, self.alpha, self.beta, 0, 1)
         sf = unpack_single_arrays(sf)
@@ -5203,7 +5204,7 @@ class Beta_Distribution:
         """
         X, xvals, xmin, xmax, show_plot = distributions_input_checking(
             self, "HF", xvals, xmin, xmax, show_plot
-        )
+        )  # lgtm [py/mismatched-multiple-assignment]
 
         hf = ss.beta.pdf(X, self.alpha, self.beta, 0, 1) / ss.beta.sf(
             X, self.alpha, self.beta, 0, 1
@@ -5269,7 +5270,7 @@ class Beta_Distribution:
         """
         X, xvals, xmin, xmax, show_plot = distributions_input_checking(
             self, "CHF", xvals, xmin, xmax, show_plot
-        )
+        )  # lgtm [py/mismatched-multiple-assignment]
 
         chf = -np.log(ss.beta.sf(X, self.alpha, self.beta, 0, 1))
         chf = unpack_single_arrays(chf)
@@ -5840,7 +5841,7 @@ class Loglogistic_Distribution:
 
         X, xvals, xmin, xmax, show_plot = distributions_input_checking(
             self, "PDF", xvals, xmin, xmax, show_plot
-        )
+        )  # lgtm [py/mismatched-multiple-assignment]
 
         pdf = ss.fisk.pdf(X, self.beta, scale=self.alpha, loc=self.gamma)
         pdf = unpack_single_arrays(pdf)
@@ -5880,8 +5881,8 @@ class Loglogistic_Distribution:
         xmax=None,
         show_plot=True,
         plot_CI=True,
-        CI_type="time",
-        CI=0.95,
+        CI_type=None,
+        CI=None,
         CI_y=None,
         CI_x=None,
         **kwargs
@@ -6000,8 +6001,8 @@ class Loglogistic_Distribution:
         xmax=None,
         show_plot=True,
         plot_CI=True,
-        CI_type="time",
-        CI=0.95,
+        CI_type=None,
+        CI=None,
         CI_y=None,
         CI_x=None,
         **kwargs
@@ -6147,7 +6148,7 @@ class Loglogistic_Distribution:
 
         X, xvals, xmin, xmax, show_plot = distributions_input_checking(
             self, "HF", xvals, xmin, xmax, show_plot
-        )
+        )  # lgtm [py/mismatched-multiple-assignment]
 
         hf = (self.beta / self.alpha) * ((X - self.gamma) / self.alpha) ** (
             self.beta - 1
@@ -6190,8 +6191,8 @@ class Loglogistic_Distribution:
         xmax=None,
         show_plot=True,
         plot_CI=True,
-        CI_type="time",
-        CI=0.95,
+        CI_type=None,
+        CI=None,
         CI_y=None,
         CI_x=None,
         **kwargs
@@ -6751,7 +6752,7 @@ class Gumbel_Distribution:
         """
         X, xvals, xmin, xmax, show_plot = distributions_input_checking(
             self, "PDF", xvals, xmin, xmax, show_plot
-        )
+        )  # lgtm [py/mismatched-multiple-assignment]
 
         pdf = ss.gumbel_l.pdf(X, self.mu, self.sigma)
         pdf = unpack_single_arrays(pdf)
@@ -6791,8 +6792,8 @@ class Gumbel_Distribution:
         xmax=None,
         show_plot=True,
         plot_CI=True,
-        CI_type="time",
-        CI=0.95,
+        CI_type=None,
+        CI=None,
         CI_y=None,
         CI_x=None,
         **kwargs
@@ -6909,8 +6910,8 @@ class Gumbel_Distribution:
         xmax=None,
         show_plot=True,
         plot_CI=True,
-        CI_type="time",
-        CI=0.95,
+        CI_type=None,
+        CI=None,
         CI_y=None,
         CI_x=None,
         **kwargs
@@ -7054,7 +7055,7 @@ class Gumbel_Distribution:
         """
         X, xvals, xmin, xmax, show_plot = distributions_input_checking(
             self, "HF", xvals, xmin, xmax, show_plot
-        )
+        )  # lgtm [py/mismatched-multiple-assignment]
 
         hf = np.exp((X - self.mu) / self.sigma) / self.sigma
         hf = unpack_single_arrays(hf)
@@ -7091,8 +7092,8 @@ class Gumbel_Distribution:
         xmax=None,
         show_plot=True,
         plot_CI=True,
-        CI_type="time",
-        CI=0.95,
+        CI_type=None,
+        CI=None,
         CI_y=None,
         CI_x=None,
         **kwargs
