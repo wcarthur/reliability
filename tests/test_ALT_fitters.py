@@ -181,11 +181,11 @@ def test_Fit_Exponential_Power():
     warnings.filterwarnings(action="ignore", category=RuntimeWarning)
     data = make_ALT_data(distribution='Exponential', life_stress_model='Power', a=5e15, n=-4, stress_1=[500, 400, 350], number_of_samples=100, fraction_censored=0.2, seed=1)
     model = Fit_Exponential_Power(failures=data.failures, failure_stress=data.failure_stresses, right_censored=data.right_censored, right_censored_stress=data.right_censored_stresses, use_level_stress=300, show_life_stress_plot=False, show_probability_plot=False, print_results=False)
-    assert_allclose(model.a, 1970299637780768.8, rtol=rtol, atol=atol)
+    assert_allclose(model.a, 1877588681124430.2, rtol=rtol, atol=atol)
     assert_allclose(model.n, -3.831313136385626, rtol=rtol, atol=atol)
     assert_allclose(model.AICc, 6314.7161417145035, rtol=rtol, atol=atol)
     assert_allclose(model.BIC, 6322.083302623412, rtol=rtol, atol=atol)
-    assert_allclose(model.loglik, -3155.33786883705, rtol=rtol, atol=atol)
+    assert_allclose(model.loglik, -3155.3368707139803, rtol=rtol, atol=atol)
 
 
 def test_Fit_Weibull_Dual_Exponential():

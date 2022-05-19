@@ -1359,6 +1359,12 @@ class Fit_Everything:
             self.best_distribution = Gumbel_Distribution(
                 mu=self.Gumbel_2P_mu, sigma=self.Gumbel_2P_sigma
             )
+        elif best_dist == "GeneralizedPareto_3P":
+            self.best_distribution = GeneralizedPareto_Distribution(
+                Lambda=self.GeneralizedPareto_3P_lambda,
+                xi=self.GeneralizedPareto_3P_xi,
+                gamma=self.GeneralizedPareto_3P_gamma
+            )
 
         # print the results
         if print_results is True:  # printing occurs by default

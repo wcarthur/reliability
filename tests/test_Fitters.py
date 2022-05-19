@@ -407,8 +407,10 @@ def test_Fit_Everything():
     MLE = Fit_Everything(failures=data.failures, right_censored=data.right_censored, method='MLE', show_probability_plot=False, show_histogram_plot=False, show_PP_plot=False, show_best_distribution_probability_plot=False, print_results=False)
     LS = Fit_Everything(failures=data.failures, right_censored=data.right_censored, method='LS', show_probability_plot=False, show_histogram_plot=False, show_PP_plot=False, show_best_distribution_probability_plot=False, print_results=False)
 
-    assert_allclose(MLE.best_distribution.alpha, 0.5796887225805948, rtol=rtol, atol=atol) # best fit here is a Beta distribution
-    assert_allclose(MLE.best_distribution.beta, 4.205258710807067, rtol=rtol, atol=atol)
+    #assert_allclose(MLE.best_distribution.alpha, 0.5796887225805948, rtol=rtol, atol=atol) # best fit here is a Beta distribution
+    #assert_allclose(MLE.best_distribution.beta, 4.205258710807067, rtol=rtol, atol=atol)
+    assert_allclose(MLE.best_distribution.Lambda, 0.594606648, rtol=rtol, atol=atol)
+    assert_allclose(MLE.best_distribution.gamma, 1.0480298137989727e-07, rtol=rtol, atol=atol)
 
     assert_allclose(MLE.Weibull_2P_alpha, 0.5796887225805948, rtol=rtol, atol=atol)
     assert_allclose(MLE.Weibull_2P_beta, 4.205258710807067, rtol=rtol, atol=atol)
@@ -509,8 +511,14 @@ def test_Fit_Everything():
     assert_allclose(MLE.Exponential_1P_loglik, -95.35632179558792, rtol=rtol, atol=atol)
     assert_allclose(MLE.Exponential_1P_AD, 551.326873807673, rtol=rtol, atol=atol)
 
-    assert_allclose(LS.best_distribution.mu, 0.5350756091376212, rtol=rtol, atol=atol) # best fit here is a Normal distribution
-    assert_allclose(LS.best_distribution.sigma, 0.15352298167936318, rtol=rtol, atol=atol)
+    assert_allclose(MLE.GeneralizedPareto_3P_lambda, 0.59460664857, rtol=rtol, atol=atol)
+    assert_allclose(MLE.GeneralizedPareto_3P_gamma, 1.0480298137989727e-7, rtol=rtol, atol=atol)
+
+    #assert_allclose(LS.best_distribution.mu, 0.5350756091376212, rtol=rtol, atol=atol) # best fit here is a Normal distribution
+    #assert_allclose(LS.best_distribution.sigma, 0.15352298167936318, rtol=rtol, atol=atol)
+
+    assert_allclose(LS.best_distribution.Lambda, 1.0, rtol=rtol, atol=atol)
+    assert_allclose(LS.best_distribution.gamma, 0.0, rtol=rtol, atol=atol)
 
     assert_allclose(LS.Weibull_2P_alpha, 0.5948490848650297, rtol=rtol, atol=atol)
     assert_allclose(LS.Weibull_2P_beta, 3.850985192722524, rtol=rtol, atol=atol)
@@ -610,3 +618,7 @@ def test_Fit_Everything():
     assert_allclose(LS.Exponential_1P_BIC, 197.06920107995282, rtol=rtol, atol=atol)
     assert_allclose(LS.Exponential_1P_loglik, -95.88544185670239, rtol=rtol, atol=atol)
     assert_allclose(LS.Exponential_1P_AD, 549.85986679373, rtol=rtol, atol=atol)
+
+    assert_allclose(LS.GeneralizedPareto_3P_lambda, 1.0, rtol=rtol, atol=atol)
+    assert_allclose(LS.GeneralizedPareto_3P_gamma, 0.0, rtol=rtol, atol=atol)
+    assert_allclose(LS.GeneralizedPareto_3P_xi, 0.1, rtol=rtol, atol=atol)
