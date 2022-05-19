@@ -7526,9 +7526,9 @@ class Fit_GeneralizedPareto_3P:
                 #  The default legend in the probability plot thinks GeneralizedPareto_2P was fitted when gamma=0
                 fig.axes[0].legend_.get_texts()[0].set_text(
                     str(
-                        "Fitted GeneralizedPareto_3P\n(α="
+                        "Fitted GeneralizedPareto_3P\n(λ="
                         + str(round_to_decimals(self.Lambda, dec))
-                        + ", β="
+                        + ", ξ="
                         + str(round_to_decimals(self.xi, dec))
                         + ", γ="
                         + str(round_to_decimals(self.gamma, dec))

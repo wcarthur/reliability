@@ -10614,7 +10614,7 @@ class GeneralizedPareto_Distribution:
             plt.xlabel("x values")
             plt.ylabel("Fraction surviving")
             text_title = str(
-                "Gumbel Distribution\n"
+                "GeneralizedPareto Distribution\n"
                 + " Survival Function "
                 + "\n"
                 + self.param_title
@@ -10633,10 +10633,9 @@ class GeneralizedPareto_Distribution:
                 xmax=xmax,
             )
 
-            distribution_confidence_intervals.gumbel_CI(
+            distribution_confidence_intervals.genpareto_CI(
                 self,
                 func="SF",
-                CI_type=CI_type,
                 plot_CI=plot_CI,
                 CI=CI,
                 text_title=text_title,
@@ -10803,7 +10802,7 @@ class GeneralizedPareto_Distribution:
             plt.xlabel("x values")
             plt.ylabel("Cumulative hazard")
             text_title = str(
-                "Gumbel Distribution\n"
+                "GeneralizedPareto Distribution\n"
                 + " Cumulative Hazard Function "
                 + "\n"
                 + self.param_title

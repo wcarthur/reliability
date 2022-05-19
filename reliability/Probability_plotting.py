@@ -2117,8 +2117,10 @@ def GeneralizedPareto_probability_plot(
                 label = kwargs.pop("label")
             else:
                 label = str(
-                    "Fitted Exponential_1P (λ="
+                    "Fitted GeneralizedPareto_3P (λ="
                     + str(round_to_decimals(Lambda, dec))
+                    + ", γ="
+                    + str(round_to_decimals(fit.gamma, dec))
                     + ")"
                 )
         elif fit_gamma is True:
@@ -2147,7 +2149,7 @@ def GeneralizedPareto_probability_plot(
                 label = kwargs.pop("label")
             else:
                 label = str(
-                    "Fitted Exponential_2P\n(λ="
+                    "Fitted GeneralizePareto_3P\n(λ="
                     + str(round_to_decimals(Lambda, dec))
                     + ", γ="
                     + str(round_to_decimals(gamma, dec))
@@ -2176,7 +2178,7 @@ def GeneralizedPareto_probability_plot(
     if show_fitted_distribution is True:
         gef.CDF(label=label, **kwargs)
         plt.legend(loc="upper left")
-    plt.title("Probability plot\nExponential CDF")
+    plt.title("Probability plot\nGeneralizedPareto CDF")
     plt.ylabel("Fraction failing")
     plt.xlabel(
         xlabel
