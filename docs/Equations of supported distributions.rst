@@ -217,10 +217,28 @@ where :math:`z = \frac{t-\mu}{\sigma}`
 
 The parametrization of the Gumbel Distribution shown above is also known as the Smallest Extreme Value (SEV) distribution. There are several types of extreme value distributions, and the article on `Wikipedia <https://en.wikipedia.org/wiki/Gumbel_distribution>`_ is for the Largest Extreme Value (LEV) distribution. There is only a slight difference in the parametrisation between SEV and LEV distributions, but this change effectively flips the PDF about :math:`\mu` to give the LEV positive skewness (a longer tail to the right), while the SEV has negative skewness (a longer tail to the left).
 
+Generalized Pareto Distribution
+===============================
+
+:math: `\lambda` = scale parameter :math: `( \lambda > 0 )`
+
+:math: `\xi` = shape parameter :math: `( -\infty < \xi < \infty )`
+
+:math: `\gamma` = threshold parameter :math: `( \gamma \geq 0 )`
+
+:math:`\text{PDF:} \hspace{11mm} f(t) = \frac{1}{\lambda}\left[1 - \xi \frac{t}{lambda})\right]^{\frac{1}{\xi} - 1}` for :math: `\xi \ne 1`
+
+:math:`\text{CDF:} \hspace{11mm} F(t) = 1 - \left[ 1 - \xi\frac{t}{\lambda}\right]^{\frac{1}{\xi}}` for :math: `\xi \ne 0`
+
+:math: `text{SF:}` \hspace{11mm} R(t) = \left[ 1 - \xi\frac{t}{\lambda}\right]^{\frac{1}{\xi}}` for :math: `\xi \ne 0`
+
+For :math:` \xi = 0`, the Generalized Pareto Distribution simplifies to the Exponential Distribution.
+
+
 Location shifting the distributions
 ===================================
 
-Within *reliability* the parametrization of the Exponential, Weibull, Gamma, Lognormal, and Loglogistic distributions allows for location shifting using the gamma parameter. This will simply shift the distribution's lower limit to the right from 0 to :math:`\gamma`. In the location shifted form of the distributions, the equations listed above are almost identical, except everywhere you see :math:`t` replace it with :math:`t - \gamma`. The reason for using the location shifted form of the distribution is because some phenomena that can be modelled well by a certain probability distribution do not begin to occur immediately, so it becomes necessary to shift the lower limit of the distribution so that the data can be accurately modelled by the distribution.
+Within *reliability* the parametrization of the Exponential, Weibull, Gamma, Lognormal, Loglogistic and Generalized Pareto distributions allows for location shifting using the gamma parameter. This will simply shift the distribution's lower limit to the right from 0 to :math:`\gamma`. In the location shifted form of the distributions, the equations listed above are almost identical, except everywhere you see :math:`t` replace it with :math:`t - \gamma`. The reason for using the location shifted form of the distribution is because some phenomena that can be modelled well by a certain probability distribution do not begin to occur immediately, so it becomes necessary to shift the lower limit of the distribution so that the data can be accurately modelled by the distribution.
 
 If implementing this yourself, ensure you set all y-values to 0 for :math:`t \leq \gamma` as the raw form of the location shifted distributions above will not automatically zeroise these values for you and may result in negative values. This zeroizing is done automatically within *reliability*.
 
