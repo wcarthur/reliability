@@ -220,19 +220,19 @@ The parametrization of the Gumbel Distribution shown above is also known as the 
 Generalized Pareto Distribution
 ===============================
 
-:math: `\lambda` = scale parameter :math: `( \lambda > 0 )`
+:math:`\lambda` = scale parameter :math:`( \lambda > 0 )`
 
-:math: `\xi` = shape parameter :math: `( -\infty < \xi < \infty )`
+:math:`\xi` = shape parameter :math:`( -\infty < \xi < \infty )`
 
-:math: `\gamma` = threshold parameter :math: `( \gamma \geq 0 )`
+:math:`\gamma` = threshold parameter :math:`( \gamma \geq 0 )`
 
-:math:`\text{PDF:} \hspace{11mm} f(t) = \frac{1}{\lambda}\left[1 - \xi \frac{t}{lambda})\right]^{\frac{1}{\xi} - 1}` for :math: `\xi \ne 1`
+:math:`\text{PDF:} \hspace{11mm} f(t) = \frac{1}{\lambda}\left[1 - \xi \frac{t}{lambda})\right]^{\frac{1}{\xi} - 1}` for :math:`\xi \ne 1`
 
-:math:`\text{CDF:} \hspace{11mm} F(t) = 1 - \left[ 1 - \xi\frac{t}{\lambda}\right]^{\frac{1}{\xi}}` for :math: `\xi \ne 0`
+:math:`\text{CDF:} \hspace{11mm} F(t) = 1 - \left[ 1 - \xi\frac{t}{\lambda}\right]^{\frac{1}{\xi}}` for :math:`\xi \ne 0`
 
-:math: `text{SF:}` \hspace{11mm} R(t) = \left[ 1 - \xi\frac{t}{\lambda}\right]^{\frac{1}{\xi}}` for :math: `\xi \ne 0`
+:math:`text{SF:}` \hspace{11mm} R(t) = \left[ 1 - \xi\frac{t}{\lambda}\right]^{\frac{1}{\xi}}` for :math:`\xi \ne 0`
 
-For :math:` \xi = 0`, the Generalized Pareto Distribution simplifies to the Exponential Distribution.
+For :math:`\xi = 0`, the Generalized Pareto Distribution simplifies to the Exponential Distribution.
 
 
 Location shifting the distributions

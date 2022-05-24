@@ -10121,7 +10121,7 @@ class GeneralizedPareto_Distribution:
         self.name2 = "GeneralizedPareto_3P"
         if Lambda is None or xi is None:
             raise ValueError(
-                "Parameters mu and sigma must be specified. Eg. GeneralizedPareto(mu=5,sigma=2,xi=1)"
+                "Parameters mu and sigma must be specified. Eg. GeneralizedPareto(Lambda=5,gamma=2,xi=1)"
             )
         self.Lambda = float(Lambda)
         if Lambda <= 0:
