@@ -41,6 +41,7 @@ Included functions are:
 - zeroise_below_gamma - sets all y values to zero when x < gamma. Used when the HF and CHF equations are specified
 """
 
+from lib2to3.pygram import python_grammar_no_print_statement
 import numpy as np
 import scipy.stats as ss
 import matplotlib.pyplot as plt
@@ -2780,6 +2781,7 @@ class distribution_confidence_intervals:
         func="CDF",
         plot_CI=None,
         CI=None,
+        CI_type=None,
         text_title="",
         color=None,
         q=None,
@@ -2840,10 +2842,24 @@ class distribution_confidence_intervals:
         # this section plots the confidence interval
         if (
             self.Lambda_SE is not None
+            and self.xi_SE is not None
+            and self.Cov_Lambda_xi is not None
             and self.Z is not None
             and (plot_CI is True or q is not None or x is not None)
+            and CI_type is not None
         ):
-
+            if CI_type in ["time", "t", "T", "TIME", "Time"]:
+                CI_type = "time"
+            elif CI_type in [
+                "reliability",
+                "r",
+                "R",
+                "RELIABILITY",
+                "rel",
+                "REL",
+                "Reliability"
+            ]:
+                CI_type = "reliability"
             if func not in ["CDF", "SF", "CHF"]:
                 raise ValueError("func must be either CDF, SF, or CHF")
             if type(q) not in [list, np.ndarray, type(None)]:
@@ -2875,6 +2891,169 @@ class distribution_confidence_intervals:
                 plt.title(text_title)
                 plt.subplots_adjust(top=0.81)
 
+            def u(t, Lambda, gamma, xi): # inverse of genpareto(R)
+                return (1 + xi * (t - gamma) / Lambda) ** (-1 / xi)
+
+            def v(R, Lambda, gamma, xi): # v = t
+                return gamma + (Lambda / xi) * (1 - R**(-xi))
+
+
+            du_dl = jac(u, 1)
+            du_dx = jac(u, 2)
+            dv_dl = jac(v, 1)
+            dv_dx = jac(v, 2)
+
+            def var_u(self, v): # v is time
+                return (
+                    du_dl(v, self.Lambda, self.gamma, self.xi) ** 2 * self.Lambda_SE ** 2
+                    + du_dx(v, self.Lambda, self.gamma, self.xi) ** 2 * self.xi_SE ** 2
+                    + 2
+                    * du_dl(v, self.Lambda, self.gamma, self.xi)
+                    * du_dx(v, self.Lambda, self.gamma, self.xi)
+                    * self.Cov_Lambda_xi
+                )
+
+            def var_v(self, u): # u is reliability
+                return (
+                    dv_dl(u, self.Lambda, self.gamma, self.xi) ** 2 * self.Lambda_SE ** 2
+                    + dv_dx(u, self.Lambda, self.gamma, self.xi) ** 2 * self.xi_SE ** 2
+                    + 2
+                    * dv_dl(u, self.Lambda, self.gamma,  self.xi)
+                    * dv_dx(u, self.Lambda, self.gamma, self.xi)
+                    * self.Cov_Lambda_xi
+                )
+
+            if CI_type == "time":
+                # Y is reliability (R)
+                if func == "CHF":
+                    chf_array = np.geomspace(1e-8, self._chf[-1] * 1.5, points)
+                    Y = np.exp(-chf_array)
+                else: # CDF and SF
+                    if q is not None:
+                        Y = q
+                    else:
+                        Y = transform_spaced(
+                            "genpareto", y_lower=1e-8, y_upper=1 - 1e-8, num=points
+                        )
+
+                # v is ln(t)
+                v_lower = v(Y, self.Lambda, self.gamma, self.xi) - Z * (var_v(self, Y) ** 0.5)
+                v_upper = v(Y, self.Lambda, self.gamma, self.xi) + Z * (var_v(self, Y) ** 0.5)
+
+                t_lower = v_lower + self.gamma
+                t_upper = v_upper + self.gamma
+                
+                # clean the arrays of illegal values (<=0, nans, >=1 (if CDF or SF))
+                t_lower, t_upper, Y, Y = clean_CI_arrays(
+                    xlower=t_lower,
+                    xupper=t_upper,
+                    ylower=Y,
+                    yupper=Y,
+                    plot_type=func,
+                    q=q,
+                )
+                # artificially correct for any reversals
+                if q is None and len(t_lower) > 2 and len(t_upper) > 2:
+                    t_lower = no_reverse(t_lower, CI_type=CI_type, plot_type=func)
+                    t_upper = no_reverse(t_upper, CI_type=CI_type, plot_type=func)
+                
+                if func == "CDF":
+                    yy = 1 - Y
+                elif func == "SF":
+                    yy = Y
+                elif func == "CHF":
+                    yy = -np.log(Y)
+
+                if plot_CI is True:
+                    fill_no_autoscale(
+                        xlower=t_lower,
+                        xupper=t_upper,
+                        ylower=yy,
+                        yupper=yy,
+                        color=color,
+                        alpha=0.3,
+                        linewidth=0,
+                    )
+
+                    line_no_autoscale(
+                        x=t_lower, y=yy, color=color, linewidth=0
+                    )  # these are invisible but need to be added to the plot for crosshairs() to find them
+                    line_no_autoscale(
+                        x=t_upper, y=yy, color=color, linewidth=0
+                    )  # still need to specify color otherwise the invisible CI lines will consume default colors
+                    # plt.scatter(t_lower, yy, linewidth=1, color='blue')
+                    # plt.scatter(t_upper, yy, linewidth=1, color='red')
+
+                if q is not None:
+                    return t_lower, t_upper
+
+            elif CI_type == "reliability":
+                if x is not None:
+                    t = x - self.gamma
+                else:
+                    t0 = self.quantile(0.00001) - self.gamma
+                    if t0 <= 0:
+                        t0 = 0.0001
+                    t = np.geomspace(
+                        t0,
+                        self.quantile(0.99999) - self.gamma,
+                        points,
+                    )
+
+                # u is reliability ln(-ln(R))
+                u_lower = (
+                    u(t, self.Lambda, self.gamma, self.xi) + Z * var_u(self, t) ** 0.5
+                )  # note that gamma is incorporated into u but not in var_u. This is the same as just shifting a Weibull_2P across
+                u_upper = u(t, self.Lambda, self.gamma, self.xi) - Z * var_u(self, t) ** 0.5
+
+                Y_lower = -np.exp(u_lower)  # transform back from ln(-ln(R))
+                Y_upper = -np.exp(u_upper)
+
+                # clean the arrays of illegal values (<=0, nans, >=1 (if CDF or SF))
+                t, t, Y_lower, Y_upper = clean_CI_arrays(
+                    xlower=t,
+                    xupper=t,
+                    ylower=Y_lower,
+                    yupper=Y_upper,
+                    plot_type=func,
+                    x=x,
+                )
+                # artificially correct for any reversals
+                if x is None and len(Y_lower) > 2 and len(Y_upper) > 2:
+                    Y_lower = no_reverse(Y_lower, CI_type=CI_type, plot_type=func)
+                    Y_upper = no_reverse(Y_upper, CI_type=CI_type, plot_type=func)
+
+                if func == "CDF":
+                    yy_lower = 1 - Y_lower
+                    yy_upper = 1 - Y_upper
+                elif func == "SF":
+                    yy_lower = Y_lower
+                    yy_upper = Y_upper
+                elif func == "CHF":
+                    yy_lower = -np.log(Y_lower)
+                    yy_upper = -np.log(Y_upper)
+
+                if plot_CI is True:
+                    fill_no_autoscale(
+                        xlower=t + self.gamma,
+                        xupper=t + self.gamma,
+                        ylower=yy_lower,
+                        yupper=yy_upper,
+                        color=color,
+                        alpha=0.3,
+                        linewidth=0,
+                    )
+                    line_no_autoscale(
+                        x=t + self.gamma, y=yy_lower, color=color, linewidth=0
+                    )  # these are invisible but need to be added to the plot for crosshairs() to find them
+                    line_no_autoscale(
+                        x=t + self.gamma, y=yy_upper, color=color, linewidth=0
+                    )  # still need to specify color otherwise the invisible CI lines will consume default colors
+                    # plt.scatter(t + self.gamma, yy_upper, color='red')
+                    # plt.scatter(t + self.gamma, yy_lower, color='blue')
+
+                if x is not None:
+                    return Y_lower, Y_upper
             Lambda_upper = self.Lambda * (np.exp(Z * (self.Lambda_SE / self.Lambda)))
             Lambda_lower = self.Lambda * (np.exp(-Z * (self.Lambda_SE / self.Lambda)))
 
