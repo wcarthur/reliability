@@ -2838,12 +2838,11 @@ class distribution_confidence_intervals:
 
         """
         points = 200
-
         # this section plots the confidence interval
         if (
             self.Lambda_SE is not None
             and self.xi_SE is not None
-            and self.Cov_Lambda_xi is not None
+            and self.Cov_Lambda is not None
             and self.Z is not None
             and (plot_CI is True or q is not None or x is not None)
             and CI_type is not None
@@ -2892,10 +2891,11 @@ class distribution_confidence_intervals:
                 plt.subplots_adjust(top=0.81)
 
             def u(t, Lambda, gamma, xi): # inverse of genpareto(R)
-                return (1 + xi * (t - gamma) / Lambda) ** (-1 / xi)
+                #return (-1 / xi) * anp.log(1 + xi * (t - gamma) / Lambda)
+                return anp.log(Lambda) - xi * anp.log(t)
 
-            def v(R, Lambda, gamma, xi): # v = t
-                return gamma + (Lambda / xi) * (1 - R**(-xi))
+            def v(R, Lambda, gamma, xi): # v = ln(Lambda + xi * (t - gamma))
+                return (Lambda / xi) * ((R ** -xi) - 1) + gamma
 
 
             du_dl = jac(u, 1)
@@ -2910,7 +2910,7 @@ class distribution_confidence_intervals:
                     + 2
                     * du_dl(v, self.Lambda, self.gamma, self.xi)
                     * du_dx(v, self.Lambda, self.gamma, self.xi)
-                    * self.Cov_Lambda_xi
+                    * self.Cov_Lambda
                 )
 
             def var_v(self, u): # u is reliability
@@ -2920,7 +2920,7 @@ class distribution_confidence_intervals:
                     + 2
                     * dv_dl(u, self.Lambda, self.gamma,  self.xi)
                     * dv_dx(u, self.Lambda, self.gamma, self.xi)
-                    * self.Cov_Lambda_xi
+                    * self.Cov_Lambda
                 )
 
             if CI_type == "time":
@@ -2933,7 +2933,7 @@ class distribution_confidence_intervals:
                         Y = q
                     else:
                         Y = transform_spaced(
-                            "genpareto", y_lower=1e-8, y_upper=1 - 1e-8, num=points
+                            "weibull", y_lower=1e-8, y_upper=1 - 1e-8, num=points
                         )
 
                 # v is ln(t)
@@ -2944,6 +2944,7 @@ class distribution_confidence_intervals:
                 t_upper = v_upper + self.gamma
                 
                 # clean the arrays of illegal values (<=0, nans, >=1 (if CDF or SF))
+                print(f"Cleaning CI array for {func} and {CI_type}")
                 t_lower, t_upper, Y, Y = clean_CI_arrays(
                     xlower=t_lower,
                     xupper=t_upper,
@@ -3010,6 +3011,7 @@ class distribution_confidence_intervals:
                 Y_upper = -np.exp(u_upper)
 
                 # clean the arrays of illegal values (<=0, nans, >=1 (if CDF or SF))
+                print(f"Cleaning CI array for {func} and {CI_type}")
                 t, t, Y_lower, Y_upper = clean_CI_arrays(
                     xlower=t,
                     xupper=t,

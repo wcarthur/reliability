@@ -10123,7 +10123,7 @@ class GeneralizedPareto_Distribution:
         self.name2 = "GeneralizedPareto_3P"
         if Lambda is None or xi is None:
             raise ValueError(
-                "Parameters mu and sigma must be specified. Eg. GeneralizedPareto(Lambda=5,gamma=2,xi=1)"
+                "Parameters Lambda and xi must be specified. Eg. GeneralizedPareto(Lambda=5,gamma=2,xi=1)"
             )
         self.Lambda = float(Lambda)
         if Lambda <= 0:
@@ -10192,7 +10192,7 @@ class GeneralizedPareto_Distribution:
                 str(
                     "WARNING: "
                     + item
-                    + "is not recognised as an appropriate entry in kwargs. Appropriate entries are mu_SE, Lambda_SE, Cov_xi_Lambda, CI, and CI_type."
+                    + "is not recognised as an appropriate entry in kwargs. Appropriate entries are mu_SE, Lambda_SE, Cov_Lambda, CI, and CI_type."
                 ),
                 text_color="red",
             )
@@ -10520,7 +10520,7 @@ class GeneralizedPareto_Distribution:
             distribution_confidence_intervals.genpareto_CI(
                 self,
                 func="CDF",
-                # CI_type=CI_type,
+                CI_type=CI_type,
                 plot_CI=plot_CI,
                 CI=CI,
                 text_title=text_title,
@@ -10823,7 +10823,7 @@ class GeneralizedPareto_Distribution:
                 xmax=xmax,
             )
 
-            distribution_confidence_intervals.gumbel_CI(
+            distribution_confidence_intervals.genpareto_CI(
                 self,
                 func="CHF",
                 CI_type=CI_type,
@@ -10832,7 +10832,6 @@ class GeneralizedPareto_Distribution:
                 text_title=text_title,
                 color=p[0].get_color(),
             )
-
         lower_CI, upper_CI = extract_CI(
             dist=self, func="CHF", CI_type=CI_type, CI=CI, CI_y=CI_y, CI_x=CI_x
         )
